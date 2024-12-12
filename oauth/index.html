@@ -4,22 +4,61 @@
     <title>Kaizen OAuth</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-        function handleRedirect() {
+        window.onload = function() {
+            console.log('OAuth callback page loaded');
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             const state = urlParams.get('state');
+            const error = urlParams.get('error');
+            const error_description = urlParams.get('error_description');
+            
+            console.log('URL parameters:', {
+                code: code,
+                state: state,
+                error: error,
+                error_description: error_description
+            });
+            
+            if (error) {
+                document.getElementById('status').textContent = 'Error: ' + error_description || error;
+                console.error('OAuth error:', error, error_description);
+                return;
+            }
             
             if (code && state) {
-                // Directly pass back to the app
-                window.location.href = `https://kaizen-academy.click/callback?code=${code}&state=${state}`;
+                console.log('Authorization code received, redirecting...');
+                document.getElementById('status').textContent = 'Authorization successful, redirecting...';
+                // Pass directly back to the app with the same parameters
+                window.location.href = `https://kaizen-academy.click/oauth?code=${code}&state=${state}`;
+            } else {
+                console.log('No authorization code found');
+                document.getElementById('status').textContent = 'Error: No authorization code received';
             }
-        }
-        
-        // Run immediately
-        handleRedirect();
+        };
     </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        #status {
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <h1>Authenticating...</h1>
+    <h1>LinkedIn Authentication</h1>
+    <p id="status">Processing authentication...</p>
 </body>
 </html>
