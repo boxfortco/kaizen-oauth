@@ -3,36 +3,35 @@
 <head>
     <title>Kaizen OAuth Redirect</title>
     <script>
-        function handleRedirect() {
-            console.log('Starting redirect handler');
-            console.log('Current URL:', window.location.href);
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            console.log('URL Parameters:', Object.fromEntries(urlParams));
-            
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-            const error = urlParams.get('error');
-            
-            if (error) {
-                console.error('OAuth error:', error);
-                document.getElementById('status').textContent = 'Error: ' + error;
-                return;
-            }
-            
-            if (code && state) {
-                const redirectUrl = `kaizen-academy://callback?code=${code}&state=${state}`;
-                console.log('Redirecting to:', redirectUrl);
-                document.getElementById('status').textContent = 'Redirecting with code: ' + code;
-                window.location.href = redirectUrl;
-            } else {
-                document.getElementById('status').textContent = 'No code or state found in URL';
-            }
-        }
+    function handleRedirect() {
+        console.log('Starting redirect handler');
+        console.log('Current URL:', window.location.href);
         
-        // Run the redirect when the page loads
-        window.onload = handleRedirect;
-    </script>
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log('URL Parameters:', Object.fromEntries(urlParams));
+        
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        
+        if (code && state) {
+            const redirectUrl = `https://kaizen-academy.click/callback?code=${code}&state=${state}`;
+            console.log('Redirecting to:', redirectUrl);
+            
+            // Add a delay to see the logs
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 2000);
+        }
+    }
+    
+    window.onerror = function(msg, url, line) {
+        console.error('Error:', msg);
+        console.error('URL:', url);
+        console.error('Line:', line);
+    };
+    
+    window.onload = handleRedirect;
+</script>
 </head>
 <body>
     <h1>Redirecting back to Kaizen...</h1>
