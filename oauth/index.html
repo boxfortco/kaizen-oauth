@@ -5,60 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         window.onload = function() {
-            console.log('OAuth callback page loaded');
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-            const error = urlParams.get('error');
-            const error_description = urlParams.get('error_description');
-            
-            console.log('URL parameters:', {
-                code: code,
-                state: state,
-                error: error,
-                error_description: error_description
-            });
-            
-            if (error) {
-                document.getElementById('status').textContent = 'Error: ' + error_description || error;
-                console.error('OAuth error:', error, error_description);
-                return;
-            }
-            
-            if (code && state) {
-                console.log('Authorization code received, redirecting...');
-                document.getElementById('status').textContent = 'Authorization successful, redirecting...';
-                // Pass directly back to the app with the same parameters
-                window.location.href = `https://kaizen-academy.click/oauth?code=${code}&state=${state}`;
-            } else {
-                console.log('No authorization code found');
-                document.getElementById('status').textContent = 'Error: No authorization code received';
-            }
+            // Just pass through all query parameters
+            window.location.href = 'https://kaizen-academy.click/oauth' + window.location.search;
         };
     </script>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        #status {
-            color: #666;
-        }
-    </style>
 </head>
 <body>
-    <h1>LinkedIn Authentication</h1>
-    <p id="status">Processing authentication...</p>
+    <h1>Processing...</h1>
 </body>
 </html>
