@@ -1,57 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Kaizen OAuth Redirect</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kaizen OAuth</title>
     <script>
-        function handleRedirect() {
-            console.log('Starting redirect handler');
-            console.log('Current URL:', window.location.href);
+        window.onload = function() {
+            console.log('Callback page loaded');
+            console.log('URL:', window.location.href);
             
+            // Get the code from URL
             const urlParams = new URLSearchParams(window.location.search);
-            console.log('URL Parameters:', Object.fromEntries(urlParams));
-            
             const code = urlParams.get('code');
             const state = urlParams.get('state');
-            const error = urlParams.get('error');
-            
-            if (error) {
-                console.error('OAuth error:', error);
-                document.getElementById('status').textContent = 'Error: ' + error;
-                return;
-            }
             
             if (code && state) {
-                // Use a universal link format
-                const universalUrl = `https://kaizen-academy.click/oauth?code=${code}&state=${state}`;
-                console.log('Redirecting to:', universalUrl);
-                document.getElementById('status').textContent = 'Redirecting with code...';
-                
-                // Add a slight delay to ensure logs are visible
-                setTimeout(() => {
-                    window.location.replace(universalUrl);
-                }, 500);
+                console.log('Code found:', code);
+                // Redirect back to the app
+                window.location.href = `https://kaizen-academy.click/callback?code=${code}&state=${state}`;
             } else {
-                document.getElementById('status').textContent = 'No code or state found';
-                console.log('No code or state in URL parameters');
+                console.log('No code found in URL');
+                document.getElementById('status').textContent = 'Error: No authorization code found';
             }
         }
     </script>
 </head>
-<body style="font-family: system-ui; text-align: center; padding: 20px;">
-    <h1>Kaizen OAuth</h1>
-    <p id="status">Processing...</p>
-    <p>If you're not redirected automatically, please close this window and return to the app.</p>
-    
-    <script>
-        // Run on page load
-        document.addEventListener('DOMContentLoaded', handleRedirect);
-        
-        // Add error handling
-        window.onerror = function(msg, url, line) {
-            console.error('Error:', msg, 'at', url, ':', line);
-            document.getElementById('status').textContent = 'Error: ' + msg;
-        };
-    </script>
+<body>
+    <h1>Processing LinkedIn Authorization...</h1>
+    <p id="status">Please wait...</p>
 </body>
 </html>
