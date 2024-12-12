@@ -4,20 +4,29 @@
     <title>Kaizen OAuth Redirect</title>
     <script>
         function handleRedirect() {
+            console.log('Starting redirect handler');
+            console.log('Current URL:', window.location.href);
+            
             const urlParams = new URLSearchParams(window.location.search);
+            console.log('URL Parameters:', Object.fromEntries(urlParams));
+            
             const code = urlParams.get('code');
             const state = urlParams.get('state');
             const error = urlParams.get('error');
             
             if (error) {
                 console.error('OAuth error:', error);
+                document.getElementById('status').textContent = 'Error: ' + error;
                 return;
             }
             
             if (code && state) {
                 const redirectUrl = `kaizen-academy://callback?code=${code}&state=${state}`;
                 console.log('Redirecting to:', redirectUrl);
+                document.getElementById('status').textContent = 'Redirecting with code: ' + code;
                 window.location.href = redirectUrl;
+            } else {
+                document.getElementById('status').textContent = 'No code or state found in URL';
             }
         }
         
@@ -27,6 +36,12 @@
 </head>
 <body>
     <h1>Redirecting back to Kaizen...</h1>
+    <p id="status">Initializing redirect...</p>
     <p>If you're not redirected automatically, please close this window and return to the app.</p>
+    
+    <script>
+        // Additional debugging
+        console.log('Page loaded at:', new Date().toISOString());
+    </script>
 </body>
 </html>
