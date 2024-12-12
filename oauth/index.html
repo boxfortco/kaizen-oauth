@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kaizen OAuth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        function handleRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            
+            if (code && state) {
+                // Directly pass back to the app
+                window.location.href = `https://kaizen-academy.click/callback?code=${code}&state=${state}`;
+            }
+        }
+        
+        // Run immediately
+        handleRedirect();
+    </script>
+</head>
+<body>
+    <h1>Authenticating...</h1>
+</body>
+</html>
