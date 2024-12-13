@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Kaizen OAuth</title>
     <script>
-        window.onload = function() {
-            const code = new URLSearchParams(window.location.search).get('code');
-            if (code) {
-                window.location.replace(`https://kaizen-academy.click?code=${code}`);
-            }
-        }
+        // Extract the authorization code from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        
+        // Redirect to your app with the code
+        window.location.href = `kaizen-academy://oauth/callback?code=${code}&state=${state}`;
     </script>
 </head>
 <body>
-    <h1>Authenticating...</h1>
+    Redirecting back to app...
 </body>
 </html>
